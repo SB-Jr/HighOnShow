@@ -12,6 +12,7 @@ public class MovieModel {
     private int id;
     private String title;
     private String backdrop_path;
+    private int popularity;
     private boolean adult;
 
     public MovieModel() {
@@ -81,5 +82,13 @@ public class MovieModel {
 
     public void setAdult(boolean adult) {
         this.adult = adult;
+    }
+
+    public int getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(int popularity) {
+        this.popularity = popularity;
     }
 }
