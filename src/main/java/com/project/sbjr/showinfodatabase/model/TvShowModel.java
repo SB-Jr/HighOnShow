@@ -4,7 +4,7 @@ package com.project.sbjr.showinfodatabase.model;
  * Created by sbjr on 27/12/16.
  */
 
-public class TShowModel {
+public class TvShowModel {
 
 
     private String poster_path;
@@ -16,7 +16,7 @@ public class TShowModel {
     private String last_air_date;
     private int number_of_seasons;
 
-    public TShowModel(String poster_path, int vote_average, int id, String backdrop_path, String overview, String name) {
+    public TvShowModel(String poster_path, int vote_average, int id, String backdrop_path, String overview, String name) {
         this.poster_path = poster_path;
         this.vote_average = vote_average;
         this.id = id;
@@ -25,7 +25,7 @@ public class TShowModel {
         this.name = name;
     }
 
-    public TShowModel(String poster_path, int vote_average, int id, String backdrop_path, String overview, String name, String last_air_date, int number_of_seasons) {
+    public TvShowModel(String poster_path, int vote_average, int id, String backdrop_path, String overview, String name, String last_air_date, int number_of_seasons) {
         this.poster_path = poster_path;
         this.vote_average = vote_average;
         this.id = id;

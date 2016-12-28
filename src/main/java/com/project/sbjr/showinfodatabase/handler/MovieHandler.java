@@ -11,28 +11,34 @@ import retrofit2.Response;
 /**
  * Created by sbjr on 27/12/16.
  */
-public abstract class MovieHandler<T> implements Callback<T>{
+public abstract class MovieHandler<T> implements Callback<T> {
 
 
     Call<T> call;
     Response<T> response;
 
-    View onFalireView,onDataFetchView,onSuccessView;
+    View onFailureView, onDataFetchView, onSuccessView;
 
     abstract public void onResult(T result);
 
     abstract public void onFailure();
 
-    public void startFetch(Call<T> call){
+    public void startFetch(Call<T> call) {
         this.call = call;
-        onFalireView.setVisibility(View.GONE);
-        onSuccessView.setVisibility(View.GONE);
-        onDataFetchView.setVisibility(View.VISIBLE);
+        if (onFailureView != null) {
+            onFailureView.setVisibility(View.GONE);
+        }
+        if (onSuccessView != null) {
+            onSuccessView.setVisibility(View.GONE);
+        }
+        if (onDataFetchView != null) {
+            onDataFetchView.setVisibility(View.VISIBLE);
+        }
         call.enqueue(this);
     }
 
-    public void initViews(View onCompleteShow, View onDataFetchShow,View onFailureShow){
-        this.onFalireView = onFailureShow;
+    public void initViews(View onCompleteShow, View onDataFetchShow, View onFailureShow) {
+        this.onFailureView = onFailureShow;
         onSuccessView = onCompleteShow;
         onDataFetchView = onDataFetchShow;
     }
@@ -40,19 +46,31 @@ public abstract class MovieHandler<T> implements Callback<T>{
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
-        onFalireView.setVisibility(View.GONE);
-        onSuccessView.setVisibility(View.VISIBLE);
-        onDataFetchView.setVisibility(View.GONE);
+        if (onFailureView != null) {
+            onFailureView.setVisibility(View.GONE);
+        }
+        if (onSuccessView != null) {
+            onSuccessView.setVisibility(View.VISIBLE);
+        }
+        if (onDataFetchView != null) {
+            onDataFetchView.setVisibility(View.GONE);
+        }
         this.response = response;
         onResult(response.body());
     }
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
-        onFalireView.setVisibility(View.VISIBLE);
-        onSuccessView.setVisibility(View.GONE);
-        onDataFetchView.setVisibility(View.GONE);
+        if (onFailureView != null) {
+            onFailureView.setVisibility(View.VISIBLE);
+        }
+        if (onSuccessView != null) {
+            onSuccessView.setVisibility(View.GONE);
+        }
+        if (onDataFetchView != null) {
+            onDataFetchView.setVisibility(View.GONE);
+        }
         onFailure();
-        Log.d(MovieHandler.class.getName(),t.getMessage()+"---"+t.toString());
+        Log.d(MovieHandler.class.getName(), t.getMessage() + "---" + t.toString());
     }
 }

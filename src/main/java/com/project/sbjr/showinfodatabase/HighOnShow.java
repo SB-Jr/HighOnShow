@@ -94,13 +94,22 @@ public class HighOnShow {
          * get the movie detail
          * */
         public void getMovieDetails(int movieId,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,MovieHandler<MovieModel> handler){
-            onCompleteShow.setVisibility(View.GONE);
-            onFailureShow.setVisibility(View.GONE);
-            onDataFetchShow.setVisibility(View.VISIBLE);
-
+            if(onCompleteShow!=null) {
+                onCompleteShow.setVisibility(View.GONE);
+            }
+            if(onFailureShow!=null) {
+                onFailureShow.setVisibility(View.GONE);
+            }
+            if(onDataFetchShow!=null) {
+                onDataFetchShow.setVisibility(View.VISIBLE);
+            }
             if(highOnShow.apiKey==null||highOnShow.apiKey.length()==0){
-                onFailureShow.setVisibility(View.VISIBLE);
-                onDataFetchShow.setVisibility(View.GONE);
+                if(onFailureShow!=null) {
+                    onFailureShow.setVisibility(View.VISIBLE);
+                }
+                if(onDataFetchShow!=null) {
+                    onDataFetchShow.setVisibility(View.GONE);
+                }
                 return;
             }
             handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
@@ -109,9 +118,15 @@ public class HighOnShow {
 
         public void getMovieCredits(int movieId,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,MovieHandler<CreditResponse> handler){
 
-            onCompleteShow.setVisibility(View.GONE);
-            onFailureShow.setVisibility(View.GONE);
-            onDataFetchShow.setVisibility(View.VISIBLE);
+            if(onCompleteShow!=null) {
+                onCompleteShow.setVisibility(View.GONE);
+            }
+            if(onFailureShow!=null) {
+                onFailureShow.setVisibility(View.GONE);
+            }
+            if(onDataFetchShow!=null) {
+                onDataFetchShow.setVisibility(View.VISIBLE);
+            }
 
             if(highOnShow.apiKey==null||highOnShow.apiKey.length()==0){
                 onFailureShow.setVisibility(View.VISIBLE);
@@ -119,7 +134,7 @@ public class HighOnShow {
                 return;
             }
             handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
-            handler.startFetch(moviesFetch.getMovieCreditsById(apiKey, movieId));
+            handler.startFetch(moviesFetch.getMovieCreditsById(movieId,highOnShow.apiKey));
         }
 
         /**

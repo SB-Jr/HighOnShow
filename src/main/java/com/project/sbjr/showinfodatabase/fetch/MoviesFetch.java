@@ -28,6 +28,6 @@ public interface MoviesFetch {
     Call<MovieResponse> getMoviesBySearch(@Query("api_key") String apiKey, @Query(value = "query", encoded = true) String query);
 
     @GET("movie/{id}/credits")
-    Call<CreditResponse> getMovieCreditsById(@Query("api_key") String apiKey,@Path("id") int movieId);
+    Call<CreditResponse> getMovieCreditsById(@Path("id") int movieId,@Query("api_key") String apiKey);
 
 }
