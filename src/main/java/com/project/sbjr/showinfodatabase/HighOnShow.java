@@ -7,12 +7,9 @@ import com.project.sbjr.showinfodatabase.fetch.MoviesFetch;
 import com.project.sbjr.showinfodatabase.fetch.TvShowFetch;
 import com.project.sbjr.showinfodatabase.handler.MovieHandler;
 import com.project.sbjr.showinfodatabase.model.MovieModel;
+import com.project.sbjr.showinfodatabase.response.CreditResponse;
 import com.project.sbjr.showinfodatabase.response.MovieResponse;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -51,40 +48,6 @@ public class HighOnShow {
         }
     }
 
-    /*private void initApiKey() {
-        File f = new File();
-        if(f.exists()){
-            try {
-                FileReader fr = new FileReader(f);
-                BufferedReader br = new BufferedReader(fr);
-                apiKey = br.readLine();
-                apiKey = apiKey.trim();
-                br.close();
-                fr.close();
-                if(apiKey==null){
-                    throw new RuntimeException(f.getAbsolutePath() + " file is empty!!");
-                }
-            } catch (IOException e) {
-                apiKey=null;
-                e.printStackTrace();
-                System.out.println(e.toString());
-                throw new RuntimeException(f.getAbsolutePath() + " file is empty!!");
-            }
-        }
-        else{
-            try {
-                f.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-                throw new RuntimeException(f.getAbsolutePath() + " file is empty!!");
-            }
-
-        }
-
-    }*/
-
 
     public Movie initMovie(){
         Movie = new Movie(this);
@@ -118,69 +81,45 @@ public class HighOnShow {
             onFailureShow.setVisibility(View.GONE);
             onDataFetchShow.setVisibility(View.VISIBLE);
 
-            if(highOnShow.apiKey==null||apiKey.length()==0){
+            if(highOnShow.apiKey==null||highOnShow.apiKey.length()==0){
                 onFailureShow.setVisibility(View.VISIBLE);
                 onDataFetchShow.setVisibility(View.GONE);
+                return;
             }
             handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
             handler.startFetch(moviesFetch.getUpcomingMovies(apiKey, 1));
-
-            /*
-            else {
-                Call<MovieResponse> call = moviesFetch.getUpcomingMovies(apiKey, 1);
-                final MovieResponse mr = new MovieResponse();
-                call.enqueue(new Callback<MovieResponse>() {
-                    @Override
-                    public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                        onCompleteShow.setVisibility(View.VISIBLE);
-                        onDataFetchShow.setVisibility(View.GONE);
-                        mr.setResults(response.body().getResults());
-                    }
-
-                    @Override
-                    public void onFailure(Call<MovieResponse> call, Throwable t) {
-                        onFailureShow.setVisibility(View.VISIBLE);
-                        onDataFetchShow.setVisibility(View.GONE);
-                        mr.setResults(null);
-                    }
-                });
-                return mr.getResults();
-            }*/
         }
 
         /**
          * get the movie detail
          * */
-        public MovieModel getMovieDetails(int movieId,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow){
+        public void getMovieDetails(int movieId,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,MovieHandler<MovieModel> handler){
             onCompleteShow.setVisibility(View.GONE);
             onFailureShow.setVisibility(View.GONE);
             onDataFetchShow.setVisibility(View.VISIBLE);
 
-            if(apiKey==null||apiKey.length()==0){
+            if(highOnShow.apiKey==null||highOnShow.apiKey.length()==0){
                 onFailureShow.setVisibility(View.VISIBLE);
                 onDataFetchShow.setVisibility(View.GONE);
-                return null;
+                return;
             }
-            else {
-                Call<MovieModel> call = moviesFetch.getMovieDetailsById(apiKey, movieId);
-                final MovieModel[] movieModel = new MovieModel[1];
-                call.enqueue(new Callback<MovieModel>() {
-                    @Override
-                    public void onResponse(Call<MovieModel> call, Response<MovieModel> response) {
-                        onCompleteShow.setVisibility(View.VISIBLE);
-                        onDataFetchShow.setVisibility(View.GONE);
-                        movieModel[0] = response.body();
-                    }
+            handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
+            handler.startFetch(moviesFetch.getMovieDetailsById(apiKey, movieId));
+        }
 
-                    @Override
-                    public void onFailure(Call<MovieModel> call, Throwable t) {
-                        onFailureShow.setVisibility(View.VISIBLE);
-                        onDataFetchShow.setVisibility(View.GONE);
-                        movieModel[0] = null;
-                    }
-                });
-                return movieModel[0];
+        public void getMovieCredits(int movieId,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,MovieHandler<CreditResponse> handler){
+
+            onCompleteShow.setVisibility(View.GONE);
+            onFailureShow.setVisibility(View.GONE);
+            onDataFetchShow.setVisibility(View.VISIBLE);
+
+            if(highOnShow.apiKey==null||highOnShow.apiKey.length()==0){
+                onFailureShow.setVisibility(View.VISIBLE);
+                onDataFetchShow.setVisibility(View.GONE);
+                return;
             }
+            handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
+            handler.startFetch(moviesFetch.getMovieCreditsById(apiKey, movieId));
         }
 
         /**

@@ -52,7 +52,6 @@ public abstract class MovieHandler<T> implements Callback<T>{
         onFalireView.setVisibility(View.VISIBLE);
         onSuccessView.setVisibility(View.GONE);
         onDataFetchView.setVisibility(View.GONE);
-        this.response = response;
         onFailure();
         Log.d(MovieHandler.class.getName(),t.getMessage()+"---"+t.toString());
     }

@@ -2,6 +2,7 @@ package com.project.sbjr.showinfodatabase.fetch;
 
 
 import com.project.sbjr.showinfodatabase.model.MovieModel;
+import com.project.sbjr.showinfodatabase.response.CreditResponse;
 import com.project.sbjr.showinfodatabase.response.MovieResponse;
 
 import retrofit2.Call;
@@ -25,5 +26,8 @@ public interface MoviesFetch {
 
     @GET("search/movie")
     Call<MovieResponse> getMoviesBySearch(@Query("api_key") String apiKey, @Query(value = "query", encoded = true) String query);
+
+    @GET("movie/{id}/credits")
+    Call<CreditResponse> getMovieCreditsById(@Query("api_key") String apiKey,@Path("id") int movieId);
 
 }
