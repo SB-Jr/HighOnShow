@@ -1,10 +1,13 @@
 package com.project.sbjr.showinfodatabase.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by sbjr on 27/12/16.
  */
 
-public class TvShowModel {
+public class TvShowModel implements Parcelable{
 
 
     private String poster_path;
@@ -36,6 +39,46 @@ public class TvShowModel {
         this.number_of_seasons = number_of_seasons;
     }
 
+
+    protected TvShowModel(Parcel in) {
+        poster_path = in.readString();
+        vote_average = in.readFloat();
+        id = in.readInt();
+        backdrop_path = in.readString();
+        overview = in.readString();
+        name = in.readString();
+        last_air_date = in.readString();
+        number_of_seasons = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(poster_path);
+        dest.writeFloat(vote_average);
+        dest.writeInt(id);
+        dest.writeString(backdrop_path);
+        dest.writeString(overview);
+        dest.writeString(name);
+        dest.writeString(last_air_date);
+        dest.writeInt(number_of_seasons);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<TvShowModel> CREATOR = new Creator<TvShowModel>() {
+        @Override
+        public TvShowModel createFromParcel(Parcel in) {
+            return new TvShowModel(in);
+        }
+
+        @Override
+        public TvShowModel[] newArray(int size) {
+            return new TvShowModel[size];
+        }
+    };
 
     public String getPoster_path() {
         return poster_path;

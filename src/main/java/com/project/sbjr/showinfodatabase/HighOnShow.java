@@ -18,6 +18,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+
 /**
  * Created by sbjr on 19/12/16.
  *
@@ -32,9 +34,9 @@ public class HighOnShow {
     private Retrofit retrofit;
     
     public Movie Movie;
+    public TvShow TvShow;
 
     public HighOnShow(String key) {
-        //initApiKey();
         apiKey = key;
         buildClient();
     }
@@ -54,6 +56,11 @@ public class HighOnShow {
         return Movie;
     }
 
+    public TvShow initTvShow(){
+        TvShow = new TvShow(this);
+        return TvShow;
+    }
+
     public class Movie{
 
         private HighOnShow highOnShow;
@@ -65,7 +72,7 @@ public class HighOnShow {
             this.highOnShow = highOnShow;
 
             if (retrofit == null) {
-                buildClient();
+                highOnShow.buildClient();
                 moviesFetch = retrofit.create(MoviesFetch.class);
             } else if (moviesFetch==null) {
                 moviesFetch = retrofit.create(MoviesFetch.class);
@@ -77,13 +84,23 @@ public class HighOnShow {
          * */
         public void getUpcomingMovies(final View onCompleteShow, final View onDataFetchShow, final View onFailureShow, MovieHandler<MovieResponse> handler){
 
-            onCompleteShow.setVisibility(View.GONE);
-            onFailureShow.setVisibility(View.GONE);
-            onDataFetchShow.setVisibility(View.VISIBLE);
+            if(onCompleteShow!=null) {
+                onCompleteShow.setVisibility(View.GONE);
+            }
+            if(onFailureShow!=null) {
+                onFailureShow.setVisibility(View.GONE);
+            }
+            if(onDataFetchShow!=null) {
+                onDataFetchShow.setVisibility(View.VISIBLE);
+            }
 
             if(highOnShow.apiKey==null||highOnShow.apiKey.length()==0){
-                onFailureShow.setVisibility(View.VISIBLE);
-                onDataFetchShow.setVisibility(View.GONE);
+                if(onFailureShow!=null) {
+                    onFailureShow.setVisibility(View.VISIBLE);
+                }
+                if(onDataFetchShow!=null) {
+                    onDataFetchShow.setVisibility(View.GONE);
+                }
                 return;
             }
             handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
@@ -129,8 +146,12 @@ public class HighOnShow {
             }
 
             if(highOnShow.apiKey==null||highOnShow.apiKey.length()==0){
-                onFailureShow.setVisibility(View.VISIBLE);
-                onDataFetchShow.setVisibility(View.GONE);
+                if(onFailureShow!=null) {
+                    onFailureShow.setVisibility(View.VISIBLE);
+                }
+                if(onDataFetchShow!=null) {
+                    onDataFetchShow.setVisibility(View.GONE);
+                }
                 return;
             }
             handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
@@ -141,13 +162,23 @@ public class HighOnShow {
          * get the movies matching a search keyword
          * */
         public ArrayList<MovieModel> getMovieBySearch(String query,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow){
-            onCompleteShow.setVisibility(View.GONE);
-            onFailureShow.setVisibility(View.GONE);
-            onDataFetchShow.setVisibility(View.VISIBLE);
+            if(onCompleteShow!=null) {
+                onCompleteShow.setVisibility(View.GONE);
+            }
+            if(onFailureShow!=null) {
+                onFailureShow.setVisibility(View.GONE);
+            }
+            if(onDataFetchShow!=null) {
+                onDataFetchShow.setVisibility(View.VISIBLE);
+            }
 
             if(apiKey==null||apiKey.length()==0){
-                onFailureShow.setVisibility(View.VISIBLE);
-                onDataFetchShow.setVisibility(View.GONE);
+                if(onFailureShow!=null) {
+                    onFailureShow.setVisibility(View.VISIBLE);
+                }
+                if(onDataFetchShow!=null) {
+                    onDataFetchShow.setVisibility(View.GONE);
+                }
                 return new ArrayList<MovieModel>();
             }
             else {
@@ -179,6 +210,36 @@ public class HighOnShow {
         private TvShowFetch tvShowFetch;
 
 
+        private HighOnShow highOnShow;
+
+        public TvShow(HighOnShow highOnShow) {
+
+            this.highOnShow = highOnShow;
+
+            if (retrofit == null) {
+                highOnShow.buildClient();
+                tvShowFetch = highOnShow.retrofit.create(TvShowFetch.class);
+            } else if (tvShowFetch==null) {
+                tvShowFetch = highOnShow.retrofit.create(TvShowFetch.class);
+            }
+        }
+
+        //todo:complete these methods
+        public void getTvShowOnAir(){
+
+        }
+
+        public void getTvShowDetailsBySearch(){
+
+        }
+
+        public void getTvShowDetailsById(){
+
+        }
+
+        public void getTvShowSeasonsById(){
+
+        }
 
     }
 
