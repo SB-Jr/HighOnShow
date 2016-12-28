@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.project.sbjr.showinfodatabase.fetch.MoviesFetch;
 import com.project.sbjr.showinfodatabase.fetch.TvShowFetch;
+import com.project.sbjr.showinfodatabase.handler.MovieHandler;
 import com.project.sbjr.showinfodatabase.model.MovieModel;
 import com.project.sbjr.showinfodatabase.response.MovieResponse;
 
@@ -35,38 +36,10 @@ public class HighOnShow {
     
     public Movie Movie;
 
-    public HighOnShow() {
-        initApiKey();
+    public HighOnShow(String key) {
+        //initApiKey();
+        apiKey = key;
         buildClient();
-    }
-
-    private void initApiKey(){
-        File f = new File("api.key");
-        if(f.exists()){
-            try {
-                FileReader fr = new FileReader(f);
-                BufferedReader br = new BufferedReader(fr);
-                apiKey = br.readLine();
-                apiKey = apiKey.trim();
-                br.close();
-                fr.close();
-            } catch (IOException e) {
-                apiKey=null;
-                e.printStackTrace();
-                System.out.println(e.toString());
-            }
-        }
-        else{
-            try {
-                f.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            finally {
-                apiKey=null;
-            }
-        }
-
     }
 
     private void buildClient(){
@@ -78,16 +51,56 @@ public class HighOnShow {
         }
     }
 
+    /*private void initApiKey() {
+        File f = new File();
+        if(f.exists()){
+            try {
+                FileReader fr = new FileReader(f);
+                BufferedReader br = new BufferedReader(fr);
+                apiKey = br.readLine();
+                apiKey = apiKey.trim();
+                br.close();
+                fr.close();
+                if(apiKey==null){
+                    throw new RuntimeException(f.getAbsolutePath() + " file is empty!!");
+                }
+            } catch (IOException e) {
+                apiKey=null;
+                e.printStackTrace();
+                System.out.println(e.toString());
+                throw new RuntimeException(f.getAbsolutePath() + " file is empty!!");
+            }
+        }
+        else{
+            try {
+                f.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            finally {
+                throw new RuntimeException(f.getAbsolutePath() + " file is empty!!");
+            }
+
+        }
+
+    }*/
+
+
     public Movie initMovie(){
-        Movie = new Movie();
+        Movie = new Movie(this);
         return Movie;
     }
 
     public class Movie{
 
+        private HighOnShow highOnShow;
+
         private MoviesFetch moviesFetch;
 
-        public Movie() {
+        public Movie(HighOnShow highOnShow) {
+
+            this.highOnShow = highOnShow;
+
             if (retrofit == null) {
                 buildClient();
                 moviesFetch = retrofit.create(MoviesFetch.class);
@@ -99,15 +112,20 @@ public class HighOnShow {
         /**
          * get the upcoming movie list
          * */
-        public ArrayList<MovieModel> getUpcomingMovies(final View onCompleteShow, final View onDataFetchShow, final View onFailureShow){
+        public void getUpcomingMovies(final View onCompleteShow, final View onDataFetchShow, final View onFailureShow, MovieHandler<MovieResponse> handler){
+
             onCompleteShow.setVisibility(View.GONE);
             onFailureShow.setVisibility(View.GONE);
             onDataFetchShow.setVisibility(View.VISIBLE);
-            if(apiKey==null||apiKey.length()==0){
+
+            if(highOnShow.apiKey==null||apiKey.length()==0){
                 onFailureShow.setVisibility(View.VISIBLE);
                 onDataFetchShow.setVisibility(View.GONE);
-                return new ArrayList<MovieModel>();
             }
+            handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
+            handler.startFetch(moviesFetch.getUpcomingMovies(apiKey, 1));
+
+            /*
             else {
                 Call<MovieResponse> call = moviesFetch.getUpcomingMovies(apiKey, 1);
                 final MovieResponse mr = new MovieResponse();
@@ -127,7 +145,7 @@ public class HighOnShow {
                     }
                 });
                 return mr.getResults();
-            }
+            }*/
         }
 
         /**

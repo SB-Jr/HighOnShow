@@ -12,7 +12,7 @@ public class MovieModel {
     private int id;
     private String title;
     private String backdrop_path;
-    private int popularity;
+    private float popularity;
     private boolean adult;
 
     public MovieModel() {
@@ -84,11 +84,11 @@ public class MovieModel {
         this.adult = adult;
     }
 
-    public int getPopularity() {
+    public float getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(int popularity) {
+    public void setPopularity(float popularity) {
         this.popularity = popularity;
     }
 }
