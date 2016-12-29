@@ -5,10 +5,11 @@ import android.view.View;
 
 import com.project.sbjr.showinfodatabase.fetch.MoviesFetch;
 import com.project.sbjr.showinfodatabase.fetch.TvShowFetch;
-import com.project.sbjr.showinfodatabase.handler.MovieHandler;
+import com.project.sbjr.showinfodatabase.handler.ShowHandler;
 import com.project.sbjr.showinfodatabase.model.MovieModel;
 import com.project.sbjr.showinfodatabase.response.CreditResponse;
 import com.project.sbjr.showinfodatabase.response.MovieResponse;
+import com.project.sbjr.showinfodatabase.response.TvOnAirResponse;
 
 import java.util.ArrayList;
 
@@ -17,8 +18,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by sbjr on 19/12/16.
@@ -82,7 +81,7 @@ public class HighOnShow {
         /**
          * get the upcoming movie list
          * */
-        public void getUpcomingMovies(final View onCompleteShow, final View onDataFetchShow, final View onFailureShow, MovieHandler<MovieResponse> handler){
+        public void getUpcomingMovies(final View onCompleteShow, final View onDataFetchShow, final View onFailureShow, ShowHandler<MovieResponse> handler){
 
             if(onCompleteShow!=null) {
                 onCompleteShow.setVisibility(View.GONE);
@@ -110,7 +109,7 @@ public class HighOnShow {
         /**
          * get the movie detail
          * */
-        public void getMovieDetails(int movieId,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,MovieHandler<MovieModel> handler){
+        public void getMovieDetails(int movieId,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,ShowHandler<MovieModel> handler){
             if(onCompleteShow!=null) {
                 onCompleteShow.setVisibility(View.GONE);
             }
@@ -133,7 +132,7 @@ public class HighOnShow {
             handler.startFetch(moviesFetch.getMovieDetailsById(apiKey, movieId));
         }
 
-        public void getMovieCredits(int movieId,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,MovieHandler<CreditResponse> handler){
+        public void getMovieCredits(int movieId,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,ShowHandler<CreditResponse> handler){
 
             if(onCompleteShow!=null) {
                 onCompleteShow.setVisibility(View.GONE);
@@ -205,7 +204,7 @@ public class HighOnShow {
 
     }
 
-    private class TvShow{
+    public class TvShow{
 
         private TvShowFetch tvShowFetch;
 
@@ -225,8 +224,28 @@ public class HighOnShow {
         }
 
         //todo:complete these methods
-        public void getTvShowOnAir(){
+        public void getTvShowOnAir(final View onCompleteShow, final View onDataFetchShow, final View onFailureShow, ShowHandler<TvOnAirResponse> handler){
+            if(onCompleteShow!=null) {
+                onCompleteShow.setVisibility(View.GONE);
+            }
+            if(onFailureShow!=null) {
+                onFailureShow.setVisibility(View.GONE);
+            }
+            if(onDataFetchShow!=null) {
+                onDataFetchShow.setVisibility(View.VISIBLE);
+            }
 
+            if(highOnShow.apiKey==null||highOnShow.apiKey.length()==0){
+                if(onFailureShow!=null) {
+                    onFailureShow.setVisibility(View.VISIBLE);
+                }
+                if(onDataFetchShow!=null) {
+                    onDataFetchShow.setVisibility(View.GONE);
+                }
+                return;
+            }
+            handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
+            handler.startFetch(tvShowFetch.getTvShowOnAir(highOnShow.apiKey,1));
         }
 
         public void getTvShowDetailsBySearch(){

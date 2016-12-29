@@ -11,7 +11,7 @@ import retrofit2.Response;
 /**
  * Created by sbjr on 27/12/16.
  */
-public abstract class MovieHandler<T> implements Callback<T> {
+public abstract class ShowHandler<T> implements Callback<T> {
 
 
     Call<T> call;
@@ -71,6 +71,6 @@ public abstract class MovieHandler<T> implements Callback<T> {
             onDataFetchView.setVisibility(View.GONE);
         }
         onFailure();
-        Log.d(MovieHandler.class.getName(), t.getMessage() + "---" + t.toString());
+        Log.d(ShowHandler.class.getName(), t.getMessage() + "---" + t.toString());
     }
 }
