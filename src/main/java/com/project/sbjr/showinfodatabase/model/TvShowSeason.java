@@ -3,6 +3,8 @@ package com.project.sbjr.showinfodatabase.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by sbjr on 29/12/16.
  */
@@ -13,17 +15,20 @@ public class TvShowSeason implements Parcelable{
     private int id;
     private String poster_path;
     private int season_number;
+    private ArrayList<TvShowEpisode> episodes;
 
     public TvShowSeason() {
     }
 
-    public TvShowSeason(String air_date, int episode_count, int id, String poster_path, int season_number) {
+    public TvShowSeason(String air_date, int episode_count, int id, String poster_path, int season_number, ArrayList<TvShowEpisode> episodes) {
         this.air_date = air_date;
         this.episode_count = episode_count;
         this.id = id;
         this.poster_path = poster_path;
         this.season_number = season_number;
+        this.episodes = episodes;
     }
+
 
     protected TvShowSeason(Parcel in) {
         air_date = in.readString();
@@ -31,6 +36,7 @@ public class TvShowSeason implements Parcelable{
         id = in.readInt();
         poster_path = in.readString();
         season_number = in.readInt();
+        episodes = in.createTypedArrayList(TvShowEpisode.CREATOR);
     }
 
     @Override
@@ -40,6 +46,7 @@ public class TvShowSeason implements Parcelable{
         dest.writeInt(id);
         dest.writeString(poster_path);
         dest.writeInt(season_number);
+        dest.writeTypedList(episodes);
     }
 
     @Override
@@ -97,5 +104,13 @@ public class TvShowSeason implements Parcelable{
 
     public void setSeason_number(int season_number) {
         this.season_number = season_number;
+    }
+
+    public ArrayList<TvShowEpisode> getEpisodes() {
+        return episodes;
+    }
+
+    public void setEpisodes(ArrayList<TvShowEpisode> episodes) {
+        this.episodes = episodes;
     }
 }

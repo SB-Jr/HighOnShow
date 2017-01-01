@@ -125,7 +125,7 @@ public class MovieModel implements Parcelable{
         this.backdrop_path = backdrop_path;
     }
 
-    public boolean isAdult() {
+    public boolean getAdult() {
         return adult;
     }
 

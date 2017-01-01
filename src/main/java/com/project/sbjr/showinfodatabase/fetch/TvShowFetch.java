@@ -1,6 +1,7 @@
 package com.project.sbjr.showinfodatabase.fetch;
 
 import com.project.sbjr.showinfodatabase.model.TvShowModel;
+import com.project.sbjr.showinfodatabase.model.TvShowSeason;
 import com.project.sbjr.showinfodatabase.response.TvOnAirResponse;
 
 import retrofit2.Call;
@@ -18,6 +19,9 @@ public interface TvShowFetch {
     Call<TvOnAirResponse> getTvShowOnAir(@Query("api_key") String apiKey,@Query("page") int page);
 
     @GET("tv/{id}")
-    Call<TvShowModel> getTvShowById(@Query("api_key")String apiKey, @Path("id")int movieId);
+    Call<TvShowModel> getTvShowById(@Query("api_key")String apiKey, @Path("id")int tvShowId);
+
+    @GET("/tv/{id}/season/{ses_num")
+    Call<TvShowSeason> getTvShowSeasonInfoById(@Query("api_key")String apiKey,@Path("id")int tvShowId,@Path("ses_num")int season_number);
 
 }

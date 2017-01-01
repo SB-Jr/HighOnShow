@@ -22,7 +22,7 @@ public interface MoviesFetch {
     Call<MovieResponse> getUpcomingMovies(@Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("movie/{id}")
-    Call<MovieModel> getMovieDetailsById(@Query("api_key") String apiKey, @Path("id") int movieid);
+    Call<MovieModel> getMovieDetailsById(@Path("id") int movieid,@Query("api_key") String apiKey);
 
     @GET("search/movie")
     Call<MovieResponse> getMoviesBySearch(@Query("api_key") String apiKey, @Query(value = "query", encoded = true) String query);

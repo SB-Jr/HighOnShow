@@ -7,11 +7,13 @@ import com.project.sbjr.showinfodatabase.fetch.MoviesFetch;
 import com.project.sbjr.showinfodatabase.fetch.TvShowFetch;
 import com.project.sbjr.showinfodatabase.handler.ShowHandler;
 import com.project.sbjr.showinfodatabase.model.MovieModel;
+import com.project.sbjr.showinfodatabase.model.TvShowModel;
 import com.project.sbjr.showinfodatabase.response.CreditResponse;
 import com.project.sbjr.showinfodatabase.response.MovieResponse;
 import com.project.sbjr.showinfodatabase.response.TvOnAirResponse;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -129,7 +131,7 @@ public class HighOnShow {
                 return;
             }
             handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
-            handler.startFetch(moviesFetch.getMovieDetailsById(apiKey, movieId));
+            handler.startFetch(moviesFetch.getMovieDetailsById(movieId,apiKey));
         }
 
         public void getMovieCredits(int movieId,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,ShowHandler<CreditResponse> handler){
@@ -248,18 +250,73 @@ public class HighOnShow {
             handler.startFetch(tvShowFetch.getTvShowOnAir(highOnShow.apiKey,1));
         }
 
-        public void getTvShowDetailsBySearch(){
+        public void getTvShowDetailsBySearch(String query,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow){
+            if(onCompleteShow!=null) {
+                onCompleteShow.setVisibility(View.GONE);
+            }
+            if(onFailureShow!=null) {
+                onFailureShow.setVisibility(View.GONE);
+            }
+            if(onDataFetchShow!=null) {
+                onDataFetchShow.setVisibility(View.VISIBLE);
+            }
 
+            if(highOnShow.apiKey==null||highOnShow.apiKey.length()==0){
+                if(onFailureShow!=null) {
+                    onFailureShow.setVisibility(View.VISIBLE);
+                }
+                if(onDataFetchShow!=null) {
+                    onDataFetchShow.setVisibility(View.GONE);
+                }
+                return;
+            }
         }
 
-        public void getTvShowDetailsById(){
+        public void getTvShowDetailsById(int id, final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,ShowHandler<TvShowModel> handler){
+            if(onCompleteShow!=null) {
+                onCompleteShow.setVisibility(View.GONE);
+            }
+            if(onFailureShow!=null) {
+                onFailureShow.setVisibility(View.GONE);
+            }
+            if(onDataFetchShow!=null) {
+                onDataFetchShow.setVisibility(View.VISIBLE);
+            }
 
+            if(highOnShow.apiKey==null||highOnShow.apiKey.length()==0){
+                if(onFailureShow!=null) {
+                    onFailureShow.setVisibility(View.VISIBLE);
+                }
+                if(onDataFetchShow!=null) {
+                    onDataFetchShow.setVisibility(View.GONE);
+                }
+                return;
+            }
+            handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
+            handler.startFetch(tvShowFetch.getTvShowById(highOnShow.apiKey,id));
         }
 
-        public void getTvShowSeasonsById(){
+        public void getTvShowSeasonsById(int id,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow){
+            if(onCompleteShow!=null) {
+                onCompleteShow.setVisibility(View.GONE);
+            }
+            if(onFailureShow!=null) {
+                onFailureShow.setVisibility(View.GONE);
+            }
+            if(onDataFetchShow!=null) {
+                onDataFetchShow.setVisibility(View.VISIBLE);
+            }
 
+            if(highOnShow.apiKey==null||highOnShow.apiKey.length()==0){
+                if(onFailureShow!=null) {
+                    onFailureShow.setVisibility(View.VISIBLE);
+                }
+                if(onDataFetchShow!=null) {
+                    onDataFetchShow.setVisibility(View.GONE);
+                }
+                return;
+            }
         }
-
     }
 
 }
