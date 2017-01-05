@@ -19,9 +19,12 @@ public interface TvShowFetch {
     Call<TvOnAirResponse> getTvShowOnAir(@Query("api_key") String apiKey,@Query("page") int page);
 
     @GET("tv/{id}")
-    Call<TvShowModel> getTvShowById(@Query("api_key")String apiKey, @Path("id")int tvShowId);
+    Call<TvShowModel> getTvShowById(@Path("id")int tvShowId,@Query("api_key")String apiKey);
 
     @GET("/tv/{id}/season/{ses_num")
-    Call<TvShowSeason> getTvShowSeasonInfoById(@Query("api_key")String apiKey,@Path("id")int tvShowId,@Path("ses_num")int season_number);
+    Call<TvShowSeason> getTvShowSeasonInfoById(@Path("id")int tvShowId,@Path("ses_num")int season_number,@Query("api_key")String apiKey);
+
+    @GET("/search/tv")
+    Call<TvOnAirResponse> getTvShowBySearch(@Query("api_key")String apiKey,@Query("query")String query);
 
 }

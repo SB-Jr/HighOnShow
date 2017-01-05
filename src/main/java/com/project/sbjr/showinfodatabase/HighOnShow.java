@@ -8,6 +8,7 @@ import com.project.sbjr.showinfodatabase.fetch.TvShowFetch;
 import com.project.sbjr.showinfodatabase.handler.ShowHandler;
 import com.project.sbjr.showinfodatabase.model.MovieModel;
 import com.project.sbjr.showinfodatabase.model.TvShowModel;
+import com.project.sbjr.showinfodatabase.model.TvShowSeason;
 import com.project.sbjr.showinfodatabase.response.CreditResponse;
 import com.project.sbjr.showinfodatabase.response.MovieResponse;
 import com.project.sbjr.showinfodatabase.response.TvOnAirResponse;
@@ -162,7 +163,7 @@ public class HighOnShow {
         /**
          * get the movies matching a search keyword
          * */
-        public ArrayList<MovieModel> getMovieBySearch(String query,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow){
+        public void getMovieBySearch(String query,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,ShowHandler<MovieResponse> handler){
             if(onCompleteShow!=null) {
                 onCompleteShow.setVisibility(View.GONE);
             }
@@ -180,28 +181,10 @@ public class HighOnShow {
                 if(onDataFetchShow!=null) {
                     onDataFetchShow.setVisibility(View.GONE);
                 }
-                return new ArrayList<MovieModel>();
+                return;
             }
-            else {
-                Call<MovieResponse> call = moviesFetch.getMoviesBySearch(apiKey, query);
-                final MovieResponse mr = new MovieResponse();
-                call.enqueue(new Callback<MovieResponse>() {
-                    @Override
-                    public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                        onCompleteShow.setVisibility(View.VISIBLE);
-                        onDataFetchShow.setVisibility(View.GONE);
-                        mr.setResults(response.body().getResults());
-                    }
-
-                    @Override
-                    public void onFailure(Call<MovieResponse> call, Throwable t) {
-                        onFailureShow.setVisibility(View.VISIBLE);
-                        onDataFetchShow.setVisibility(View.GONE);
-                        mr.setResults(null);
-                    }
-                });
-                return mr.getResults();
-            }
+            handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
+            handler.startFetch(moviesFetch.getMoviesBySearch(highOnShow.apiKey,query));
         }
 
     }
@@ -250,7 +233,7 @@ public class HighOnShow {
             handler.startFetch(tvShowFetch.getTvShowOnAir(highOnShow.apiKey,1));
         }
 
-        public void getTvShowDetailsBySearch(String query,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow){
+        public void getTvShowDetailsBySearch(String query,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,ShowHandler<TvOnAirResponse> handler){
             if(onCompleteShow!=null) {
                 onCompleteShow.setVisibility(View.GONE);
             }
@@ -270,6 +253,8 @@ public class HighOnShow {
                 }
                 return;
             }
+            handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
+            handler.startFetch(tvShowFetch.getTvShowBySearch(highOnShow.apiKey,query));
         }
 
         public void getTvShowDetailsById(int id, final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,ShowHandler<TvShowModel> handler){
@@ -293,10 +278,10 @@ public class HighOnShow {
                 return;
             }
             handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
-            handler.startFetch(tvShowFetch.getTvShowById(highOnShow.apiKey,id));
+            handler.startFetch(tvShowFetch.getTvShowById(id,highOnShow.apiKey));
         }
 
-        public void getTvShowSeasonsById(int id,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow){
+        public void getTvShowSeasonsById(int id, int seasonNumber,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow, ShowHandler<TvShowSeason> handler){
             if(onCompleteShow!=null) {
                 onCompleteShow.setVisibility(View.GONE);
             }
@@ -316,7 +301,10 @@ public class HighOnShow {
                 }
                 return;
             }
+            handler.initViews(onCompleteShow,onDataFetchShow,onFailureShow);
+            handler.startFetch(tvShowFetch.getTvShowSeasonInfoById(id,seasonNumber,highOnShow.apiKey));
         }
+
     }
 
 }
