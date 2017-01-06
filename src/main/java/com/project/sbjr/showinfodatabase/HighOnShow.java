@@ -11,14 +11,8 @@ import com.project.sbjr.showinfodatabase.model.TvShowModel;
 import com.project.sbjr.showinfodatabase.model.TvShowSeason;
 import com.project.sbjr.showinfodatabase.response.CreditResponse;
 import com.project.sbjr.showinfodatabase.response.MovieResponse;
-import com.project.sbjr.showinfodatabase.response.TvOnAirResponse;
+import com.project.sbjr.showinfodatabase.response.TvResponse;
 
-import java.util.ArrayList;
-import java.util.logging.Handler;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -209,7 +203,7 @@ public class HighOnShow {
         }
 
         //todo:complete these methods
-        public void getTvShowOnAir(final View onCompleteShow, final View onDataFetchShow, final View onFailureShow, ShowHandler<TvOnAirResponse> handler){
+        public void getTvShowOnAir(final View onCompleteShow, final View onDataFetchShow, final View onFailureShow, ShowHandler<TvResponse> handler){
             if(onCompleteShow!=null) {
                 onCompleteShow.setVisibility(View.GONE);
             }
@@ -233,7 +227,7 @@ public class HighOnShow {
             handler.startFetch(tvShowFetch.getTvShowOnAir(highOnShow.apiKey,1));
         }
 
-        public void getTvShowDetailsBySearch(String query,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,ShowHandler<TvOnAirResponse> handler){
+        public void getTvShowDetailsBySearch(String query,final View onCompleteShow, final View onDataFetchShow, final View onFailureShow,ShowHandler<TvResponse> handler){
             if(onCompleteShow!=null) {
                 onCompleteShow.setVisibility(View.GONE);
             }

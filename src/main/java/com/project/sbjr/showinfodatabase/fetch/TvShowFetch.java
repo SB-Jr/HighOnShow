@@ -2,7 +2,7 @@ package com.project.sbjr.showinfodatabase.fetch;
 
 import com.project.sbjr.showinfodatabase.model.TvShowModel;
 import com.project.sbjr.showinfodatabase.model.TvShowSeason;
-import com.project.sbjr.showinfodatabase.response.TvOnAirResponse;
+import com.project.sbjr.showinfodatabase.response.TvResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -16,15 +16,15 @@ import retrofit2.http.Query;
 public interface TvShowFetch {
 
     @GET("tv/on_the_air")
-    Call<TvOnAirResponse> getTvShowOnAir(@Query("api_key") String apiKey,@Query("page") int page);
+    Call<TvResponse> getTvShowOnAir(@Query("api_key") String apiKey, @Query("page") int page);
 
     @GET("tv/{id}")
     Call<TvShowModel> getTvShowById(@Path("id")int tvShowId,@Query("api_key")String apiKey);
 
-    @GET("/tv/{id}/season/{ses_num")
+    @GET("tv/{id}/season/{ses_num}")
     Call<TvShowSeason> getTvShowSeasonInfoById(@Path("id")int tvShowId,@Path("ses_num")int season_number,@Query("api_key")String apiKey);
 
-    @GET("/search/tv")
-    Call<TvOnAirResponse> getTvShowBySearch(@Query("api_key")String apiKey,@Query("query")String query);
+    @GET("search/tv")
+    Call<TvResponse> getTvShowBySearch(@Query("api_key")String apiKey, @Query(value = "query", encoded = true)String query);
 
 }

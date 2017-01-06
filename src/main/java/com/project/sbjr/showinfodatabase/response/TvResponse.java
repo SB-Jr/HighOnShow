@@ -8,12 +8,22 @@ import java.util.ArrayList;
  * Created by sbjr on 29/12/16.
  */
 
-public class TvOnAirResponse {
+public class TvResponse {
 
     private int page;
     private int total_results;
     private int total_pages;
     private ArrayList<TvShowModel> results;
+
+    public TvResponse(int page, int total_results, int total_pages, ArrayList<TvShowModel> results) {
+        this.page = page;
+        this.total_results = total_results;
+        this.total_pages = total_pages;
+        this.results = results;
+    }
+
+    public TvResponse() {
+    }
 
     public int getTotal_results() {
         return total_results;
